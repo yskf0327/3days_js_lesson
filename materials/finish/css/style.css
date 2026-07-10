@@ -108,6 +108,10 @@ body {
   color: var(--color-text);
 }
 
+body.is-open {
+  overflow-y: hidden;
+}
+
 :where(h1, h2, h3, h4, h5, h6) {
   line-height: var(--line-height-heading);
 }
@@ -222,6 +226,13 @@ section:not(.hero) {
   transition: translate 0.3s ease-in-out;
 }
 
+@media screen and (min-width:768px) {
+  .g-nav {
+    position: static;
+    background-color: transparent;
+  }
+}
+
 .g-nav__inner {
   width: 100%;
   height: 100%;
@@ -233,9 +244,22 @@ section:not(.hero) {
   padding-inline: 4%;
 }
 
+@media screen and (min-width:768px) {
+  .g-nav__inner {
+    flex-direction: row;
+  }
+}
+
 .g-nav__item {
   border-block-end: 1px dashed var(--color-text-muted);
   padding-inline-end: var(--space-xs);
+}
+
+@media screen and (min-width:768px) {
+  .g-nav__item {
+    border: none;
+    padding: 0;
+  }
 }
 
 .g-nav__link {
@@ -246,11 +270,24 @@ section:not(.hero) {
   color: var(--color-bg-sub);
 }
 
+@media screen and (min-width:768px) {
+  .g-nav__link {
+    font-size: var(--font-size-body);
+    color: currentColor;
+  }
+}
+
 .btn-nav {
   position: relative;
   z-index: 3;
   width: 45px;
   height: 45px;
+}
+
+@media screen and (min-width:768px) {
+  .btn-nav {
+    display: none;
+  }
 }
 
 .btn-nav__line {
@@ -272,6 +309,9 @@ section:not(.hero) {
     height: 100%;
     background-color: currentColor;
     position: absolute;
+    transition-property: background-color, rotate, top;
+    transition-duration: inherit;
+    transition-timing-function: inherit;
   }
 
   &::before {
