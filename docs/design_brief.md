@@ -1,4 +1,4 @@
-# デザイン・コンテンツ指針（`materials/finish/`）
+# デザイン・コンテンツ指針（`materials/finish/portfolio/`）
 
 > 受講生が**そのまま自身のポートフォリオに流用できる**ことを想定した、グレースケール・ワイヤーフレーム調の教材。
 
@@ -63,17 +63,17 @@ body {
 - 角丸・シャドウは **使わない** か、ごく弱く（`border-radius: 4px` 程度まで）
 - 余白は十分に取り、詰め込みすぎない
 
-### ドロワーメニュー（ナビゲーション）
+### レスポンシブナビゲーション
 
-**PC・SP ともドロワーで統一する。メディアクエリによる切り替えは行わない。**
+**768px未満はドロワー、768px以上は横並びナビとして表示する。**
 
 | 項目 | 方針 |
 |------|------|
-| 画面幅 | デスクトップでもハンバーガーボタンを表示し、リンクはドロワー内に配置 |
-| やらないこと | `@media` で横並びグローバルナビ ↔ ドロワーを出し分ける |
-| ねらい | 実装を1パターンに絞る。JS は常に「クリック → class 切替」だけ |
+| 768px未満 | ハンバーガーボタンを表示し、`body.is-open`でドロワーを開閉 |
+| 768px以上 | `.g-nav`を横並び表示し、ハンバーガーボタンを非表示 |
+| JS | 画面幅に関係なく「クリック → class切替」の基本形を使用 |
 
-※ 受講生が後から PC 向けに横並びナビへ改修するのは自由だが、**教材の完成形はドロワーのみ**。
+※ 1日目のJS課題はドロワー開閉に集中し、PC表示の切替は配布済みCSSとして扱う。
 
 ### HTML・マークアップ（教材の範囲）
 
@@ -91,13 +91,12 @@ body {
 ```
 #hero    … トップ
 #works   … 制作実績
-#about   … 自己紹介
+#profile … 自己紹介
 #skills  … スキル
 ```
 
 ### 避けるもの
 
-- ナビのメディアクエリ切り替え（PC 横並びナビ / SP ドロワーの出し分け）
 - ブランドカラー・グラデーション・写真中心の見せ方
 - 複雑なグリッド・凝ったアニメーション（CSS）
 - 受講生が消しにくい装飾の多用
@@ -109,13 +108,12 @@ body {
 | セクション | `id` 案 | 役割 | JS |
 |------------|---------|------|-----|
 | Header | — | ロゴ＋ハンバーガー | ドロワー |
-| Hero | `#hero` | メインビジュアル（Swiper・3枚） | Swiper（3日目） |
+| Hero | `#hero` | メインビジュアル（Swiper・4枚） | Swiper（3日目） |
 | Works | `#works` | 制作実績カード → 画像拡大モーダル | モーダル（2〜3日目） |
-| About | `#about` | 自己紹介（短文） | **なし（静的）** |
-| Skills | `#skills` | スキル・使用ツール | **なし（静的）** |
+| Profile | `#profile` | 自己紹介＋Skills | **なし（静的）** |
 | Footer | — | 名前・連絡先 | なし |
 
-**表示順**：Hero → Works → About → Skills → Footer
+**表示順**：Hero → Works → Profile（Skills含む）→ Footer
 
 ※ FAQ・アコーディオンは**採用しない**（ポートフォリオの UX・文脈に合わない）。
 
@@ -127,22 +125,17 @@ body {
 
 | 項目 | 配布時の文言 | 受講生への意図 |
 |------|--------------|----------------|
-| サイトタイトル | `Portfolio` | `<title>` およびロゴ横 |
-| デザイナー名 | `Your Name` | ヒーロー・About・Footer。自分の名前に差し替え |
-| 肩書き（任意） | `Web Designer` | ヒーロー副題 |
+| サイトタイトル | `My Portfolio` | `<title>` およびヘッダーロゴ |
+| デザイナー名 | `Your Name` | Profile・Footer。自分の名前に差し替え |
+| 肩書き（任意） | `Web/Graphic Designer` | Profile内。自分の肩書きに差し替え |
 
-### Hero（Swiper・3スライド）
+### Hero（Swiper・4スライド）
 
-| # | 見出し | 補足文 |
-|---|--------|--------|
-| 1 | `Your Name` | `デザインのお仕事を承ります` |
-| 2 | `Works` | `制作実績をご覧ください` |
-| 3 | `Contact` | `お気軽にお問い合わせください` |
-
-- 画像：グレープレースホルダ（`800×400` 相当の矩形）
+- `placeholder1.jpg`〜`placeholder4.jpg`を表示
+- 前後ナビゲーションボタンを配置
 - スライド未実装時（1〜2日目）も **1枚目だけ表示** されればよい
 
-### About（自己紹介・静的）
+### Profile（自己紹介＋Skills・静的）
 
 2〜3行のプレースホルダ。常時表示。
 
@@ -152,7 +145,7 @@ body {
 お仕事のご依頼・ご相談をお待ちしております。
 ```
 
-### Skills（スキル・静的）── **案A：バッジ並び（確定）**
+#### Skills（スキル・静的）── **案A：バッジ並び（確定）**
 
 スキル名をバッジ（タグ）として横並びに配置。常時表示。JS 不要。
 
@@ -231,48 +224,46 @@ dialogClose.addEventListener('click', () => {
 
 | # | タイトル | 制作期間 | 使用ツール |
 |---|----------|----------|------------|
-| 1 | `作品タイトル 01` | `2025年3月` | `Figma / Illustrator` |
-| 2 | `作品タイトル 02` | `2025年1月` | `Photoshop` |
-| 3 | `作品タイトル 03` | `2024年11月` | `Figma / HTML / CSS` |
-| 4 | `作品タイトル 04` | `2024年9月` | `Illustrator` |
+| 1 | `作品タイトル 01` | `3日` | `Illustrator / Photoshop` |
+| 2 | `作品タイトルタイトルタイトル 02` | `4時間` | `Photoshop` |
+| 3 | `作品タイトルタイトルタイトル 03` | `10日` | `Figma / HTML / CSS` |
+| 4 | `作品タイトル 04` | `2週間` | `Illustrator` |
 
 ### Footer
 
 ```
-Your Name
-example@email.com
+© 2026 Your Name
 ```
 
-- SNS は **省略** またはテキストリンク1つ（`Instagram` 等のプレースホルダ）
+- SNS・メールアドレスは省略
 
 ---
 
-## クラス名・マークアップ（`finish` 実装用）
+## クラス名・マークアップ（`finish/portfolio` 実装用）
 
 ```
 header
-  .logo / .btn-nav（ハンバーガー・常時表示）
-  .drawer-overlay
-  .drawer.g-nav / .is-open（開状態は body または .drawer に付与）
+  .logo / .g-nav / .btn-nav
+  body.is-open（768px未満のドロワー開状態）
 ```
 
 #hero
-  .swiper > .swiper-wrapper > .swiper-slide ×3
+  .swiper > .swiper-wrapper > .swiper-slide ×4
 
 #works
-  .works-grid
-  .works-card（クリック対象・カード全体）
+  .works-list > .works-list__item
+  .works-card
     img / .works-card__title / .works-card__meta 等
   #works-dialog.works-dialog（dialog）
     #works-dialog-close
     #works-dialog-img
 
-#about
-  .about-text（静的）
-
-#skills
-  .skills-list
-  .skills-list__badge
+#profile
+  .profile__body（静的）
+    #skills
+      .skills-list
+      .skills-list__badge
+  .profile__figure
 
 footer
 ```
@@ -283,8 +274,9 @@ footer
 
 | 種類 | 方針 |
 |------|------|
-| ヒーロー | CSS のグレー背景 or `images/placeholder.svg` |
-| 作品サムネ | 正方形プレースホルダ（`300×300` 想定）。`work-01.jpg` 等 |
+| ヒーロー | `images/placeholder1.jpg`〜`placeholder4.jpg` |
+| 作品サムネ | `images/placeholder1.jpg`〜`placeholder4.jpg` |
+| プロフィール | `images/profile.jpg` |
 | モーダル内 | カードと**同じ画像**を `src` コピーで表示（`max-width: 100%`） |
 | ファビコン | 省略 or 単色四角 |
 
@@ -296,7 +288,7 @@ footer
 
 > このサイトはワイヤーフレーム調の教材です。  
 > グレーの枠・プレースホルダを、ご自身のデザイン・写真・文言に差し替えることで、そのままポートフォリオとして活用できます。  
-> About・Skills は常に表示、Works はカードをクリックすると画像が拡大します。
+> Profile・Skills は常に表示、Works はカードをクリックすると画像が拡大します。
 
 ---
 
@@ -307,13 +299,13 @@ footer
 | Works カード UI＋画像拡大モーダル | **確定** |
 | `src` / `alt` のコピーによる画像差し替え | **確定** |
 | FAQ・アコーディオン | **不採用** |
-| About / Skills 静的セクション | **確定** |
+| Profile内のSkills静的表示 | **確定** |
 | フォント Noto Sans JP | **確定** |
 | デザイナー名プレースホルダ `Your Name` | 確定案 |
 | Works 件数 4件 | 確定案 |
-| セクション順 | **Hero → Works → Profile → Skills → Footer** |
+| セクション順 | **Hero → Works → Profile（Skills含む）→ Footer** |
 | Skills レイアウト | **案A：バッジ並び（確定）** |
-| ドロワーメニュー | **PC・SP ともドロワー**（メディアクエリ切替なし） |
+| ナビゲーション | **768px未満はドロワー、768px以上は横並び** |
 | `aria-*` 属性 | **付けない**（JS 実装に集中） |
 | セクション `h2` | **`section-title` で統一** |
 | 言語 | 日本語本文＋一部英字ラベル |
@@ -322,26 +314,26 @@ footer
 
 ## 進捗記録
 
-### 2026-07-10 ── CSS 一通り完了（Hero / Swiper 除く）
+### 2026-07-15 ── `materials/finish/portfolio/` 完成形を実装
 
-- Works・Profile（Skills 統合）・Footer まで `style.css` 実装済み
-- Hero は Swiper 導入時に CSS / CDN / JS をまとめて追加
-- モーダル CSS は `modal.js` で動作確認してから整える
-- 次フェーズ：**JS 実装**（drawer → modal → Swiper）
-- 詳細：`materials/finish/README.md`
+- HTML / CSS / `drawer.js` / `modal.js` / `swiper.js`を実装済み
+- HeroはSwiper 4スライド
+- SkillsをProfile内に統合
+- 次フェーズ：`materials/start/portfolio/`・各`steps/*/portfolio/`の切り出し
+- 詳細：`materials/finish.md`
 
 ### 2026-07-10 ── ヘッダー・ナビゲーション CSS 完了
 
 - `.header`（sticky + 下方向シャドウ）、`.g-nav` ドロワー、`.btn-nav`、`.is-open` まで実装
 - ドロワーは `nav` の `position` + `translate`（`<dialog>` は Works モーダルのみ）
-- 詳細：`materials/finish/README.md`
+- 詳細：`materials/finish.md`
 
-### 2026-07-06 ── `materials/finish/` HTML おおむね完了
+### 2026-07-06 ── `materials/finish/portfolio/` HTML おおむね完了
 
 - `index.html` のセクション骨組み・コンテンツ仮置きが完了
 - Works モーダル：`#works-dialog` / `#works-dialog-img` / `#works-dialog-close` を `#works` 内に追加
 - 次フェーズ：**CSS（`style.css`）を書きながらレイアウト調整**
-- 詳細チェックリスト：`materials/finish/README.md`
+- 詳細チェックリスト：`materials/finish.md`
 
 ---
 

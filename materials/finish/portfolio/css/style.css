@@ -49,7 +49,6 @@
   /* --------------------------------------------------------------------------
      Font size — Fluid typography（clamp）
      320px（20rem）〜 980px（61.25rem）の間で線形スケール
-     中央値 = min + (max - min) × (100vw - min) / (max - min) を vw 式に展開
      -------------------------------------------------------------------------- */
   --font-fluid-min: 20rem;
   /* 320px */
@@ -97,6 +96,7 @@
    ========================================================================== */
 html,
 body {
+  /* スムーススクロール */
   scroll-behavior: smooth;
 }
 
@@ -106,10 +106,12 @@ body {
   line-height: var(--line-height-body);
   background-color: var(--color-bg);
   color: var(--color-text);
-}
 
-body.is-open {
-  overflow-y: hidden;
+  /* メニュー・モーダル展開時、背景のスクロールを停止 */
+  &.is-open,
+  &:has(.works-dialog[open]) {
+    overflow-y: hidden;
+  }
 }
 
 :where(h1, h2, h3, h4, h5, h6) {
@@ -118,6 +120,7 @@ body.is-open {
 
 img {
   max-width: 100%;
+  vertical-align: bottom;
 }
 
 a {
@@ -125,6 +128,9 @@ a {
   text-decoration: none;
 }
 
+/* ==========================================================================
+   layout
+   ========================================================================== */
 section.hero+section {
   padding-block-start: var(--space-2xl);
 }
@@ -143,16 +149,18 @@ section:not(.hero) {
   }
 }
 
-
-
-.logo {
-  font-size: var(--font-size-heading);
-  line-height: 0;
-}
-
+/* コンテンツ幅制御用クラス */
 .container {
   width: min(92%, var(--container-max-width));
   margin-inline: auto;
+}
+
+/* ==========================================================================
+   logo / heading
+   ========================================================================== */
+.logo {
+  font-size: var(--font-size-heading);
+  line-height: 0;
 }
 
 .section-title {
@@ -189,6 +197,9 @@ section:not(.hero) {
   }
 }
 
+/* ==========================================================================
+   utility
+   ========================================================================== */
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -210,6 +221,7 @@ section:not(.hero) {
   position: sticky;
   top: 0;
   box-shadow: var(--shadow-header);
+  z-index: 2;
 }
 
 .header__inner {
@@ -277,6 +289,9 @@ section:not(.hero) {
   }
 }
 
+/* --------------------------------------------------------------------------
+     ハンバーガーボタン
+   -------------------------------------------------------------------------- */
 .btn-nav {
   position: relative;
   z-index: 3;
@@ -323,6 +338,10 @@ section:not(.hero) {
   }
 }
 
+
+/* --------------------------------------------------------------------------
+     メニュー展開時のスタイル
+   -------------------------------------------------------------------------- */
 .is-open {
   .g-nav {
     translate: -100% 0;
@@ -348,10 +367,31 @@ section:not(.hero) {
 }
 
 /* ==========================================================================
-   hero / slider 
+   hero / Swiper 
    ========================================================================== */
-/* Todo: Swiperを実装してから書く */
-.hero {}
+.hero {
+  height: 500px;
+}
+
+.swiper {
+  height: 100%;
+
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: var(--color-text);
+  background-color: rgba(255, 255, 255, 0.5);
+  height: var(--font-size-heading);
+  width: var(--font-size-heading);
+  border-radius: 50%;
+  padding: var(--space-2xs);
+}
 
 /* ==========================================================================
    works / works-card /
@@ -385,6 +425,24 @@ section:not(.hero) {
 
 .works-card__img {
   aspect-ratio: 1 / 1;
+  position: relative;
+
+  &::after {
+    pointer-events: none;
+    content: "+";
+    font-size: var(--font-size-body);
+    color: var(--color-text);
+    line-height: var(--line-height-tight);
+    width: 1.5rem;
+    height: 1.5rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    position: absolute;
+    right: var(--space-2xs);
+    top: var(--space-2xs);
+  }
 
   img {
     width: 100%;
@@ -405,7 +463,7 @@ section:not(.hero) {
 .works-card__header {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xs);
+  gap: var(--space-2xs);
 }
 
 .works-card__title {
@@ -422,11 +480,11 @@ section:not(.hero) {
 
 .works-card__badge {
   display: inline-block;
-  line-height: 1;
+  line-height: var(--line-height-tight);
+  font-size: var(--font-size-sm);
+  color: var(--color-bg);
   background-color: var(--color-text-muted);
-  color: var(--color-bg-sub);
-  line-height: 1.6;
-  padding: 0 var(--space-2xs);
+  padding: var(--space-2xs) var(--space-xs);
 }
 
 .works-card__meta {
@@ -442,8 +500,9 @@ section:not(.hero) {
 
   ul {
     display: flex;
+    flex-wrap: wrap;
 
-    li+li::before {
+    li:not(:last-of-type)::after {
       content: ",";
       display: inline-block;
       margin-inline-end: var(--space-2xs);
@@ -451,10 +510,41 @@ section:not(.hero) {
   }
 }
 
+.works-dialog {
+  padding: 0;
+  max-width: var(--container-max-width);
+
+  &::backdrop {
+    background-color: rgba(69, 69, 69, 0.5);
+  }
+}
+
+.works-dialog__content {
+  position: relative;
+}
+
+.works-dialog__close-btn {
+  position: absolute;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  top: var(--space-xs);
+  right: var(--space-xs);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+
 /* ==========================================================================
    profile / skills
    ========================================================================== */
-
 .profile__contents {
   display: flex;
   flex-direction: column;
@@ -507,7 +597,8 @@ section:not(.hero) {
   background-color: var(--color-text-muted);
   color: var(--color-bg);
   border-radius: var(--radius);
-  padding: var(--space-xs);
+  padding: var(--space-2xs) var(--space-xs);
+  line-height: var(--line-height-tight);
 }
 
 /* ==========================================================================
@@ -521,4 +612,28 @@ section:not(.hero) {
 .copyright {
   text-align: center;
   font-size: var(--font-size-sm);
+}
+
+.btn-pagetop {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  color: var(--color-text);
+  display: grid;
+  place-items: center;
+  position: fixed;
+  bottom: var(--space-md);
+  right: var(--space-md);
+  background-color: var(--color-border);
+  opacity: 0;
+  visibility: hidden;
+  z-index: 3;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+
+  &.is-shown {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: initial;
+  }
 }

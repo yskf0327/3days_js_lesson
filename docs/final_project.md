@@ -23,11 +23,11 @@
 
 | # | 機能 | 実装 | 担当日 |
 |---|------|------|--------|
-| 1 | **ドロワーメニュー** | ハンバーガーで開閉。**PC・SP ともドロワー**（メディアクエリで横並びナビに切替えない） | 1日目 |
+| 1 | **レスポンシブナビ** | 768px未満はハンバーガーで開閉、768px以上は横並び | 1日目 |
 | 2 | **モーダル（画像拡大）** | Works カードクリック → `<dialog>` で画像拡大 | 2〜3日目 |
 | 3 | **カルーセル** | ヒーロー（Swiper・CDN） | 3日目 |
 
-**静的セクション（JS 不要）**：About（自己紹介）、Skills（スキル一覧）
+**静的セクション（JS 不要）**：Profile（自己紹介＋Skills）
 
 ※ アコーディオン・FAQ は**不採用**（ポートフォリオ UX に合わない）。
 
@@ -41,9 +41,7 @@
 ├─────────────────────────────────┤
 │ Works（カード → 画像拡大）         │  ← 2〜3日目
 ├─────────────────────────────────┤
-│ About（自己紹介）                  │  ← 静的
-├─────────────────────────────────┤
-│ Skills（スキル）                   │  ← 静的
+│ Profile（自己紹介＋Skills）         │  ← 静的
 ├─────────────────────────────────┤
 │ Footer                            │
 └─────────────────────────────────┘
@@ -80,11 +78,11 @@ finish（3日目終了時）
 
 | 教材フォルダ | 対応日 | 追加・変更される JS | 1日のゴール |
 |--------------|--------|---------------------|-------------|
-| `start/` | 配布初日 | なし | サイト構造の確認 |
-| `steps/step1_drawer/` | 1日目終了 | `js/drawer.js` | ドロワーが動く |
-| `steps/step2_modal/` | **2日目終了** | `js/modal.js`（1カード・srcコピー） | 1枚のカードで画像拡大 |
-| `steps/step3_works/` | **3日目午前** | `modal.js` を拡張（`forEach` で全カード） | 全カードで画像拡大 |
-| `finish/` | 3日目終了 | `js/swiper-init.js` 等 | ヒーローがスライド |
+| `materials/start/portfolio/` | 配布初日 | なし | サイト構造の確認 |
+| `materials/steps/step1_drawer/portfolio/` | 1日目終了 | `js/drawer.js` | ドロワーが動く |
+| `materials/steps/step2_modal/portfolio/` | **2日目終了** | `js/modal.js`（1カード・srcコピー） | 1枚のカードで画像拡大 |
+| `materials/steps/step3_works/portfolio/` | **3日目午前** | `modal.js` を拡張（`forEach` で全カード） | 全カードで画像拡大 |
+| `materials/finish/portfolio/` | 3日目終了 | `js/swiper.js` 等 | ヒーローがスライド |
 
 各 `steps/` に **講師用 `answers/`** を同梱。
 
@@ -95,11 +93,13 @@ finish（3日目終了時）
 ```
 materials/
 ├── start/
+│   └── portfolio/
 ├── steps/
-│   ├── step1_drawer/
-│   ├── step2_modal/
-│   └── step3_works/
+│   ├── step1_drawer/portfolio/
+│   ├── step2_modal/portfolio/
+│   └── step3_works/portfolio/
 ├── finish/
+│   └── portfolio/
 └── practice/day1_console/   # 任意
 ```
 
@@ -107,11 +107,11 @@ materials/
 js/
 ├── drawer.js
 ├── modal.js          # step2 で基本、step3 で forEach 追加
-└── swiper-init.js
+└── swiper.js
 ```
 
 - CSS は `start` 時点で **全セクションのスタイルを含む**（JS だけ日ごとに足す）
-- About / Skills は最初から HTML 完成（JS ファイルなし）
+- Profile / Skills は最初から HTML 完成（JS ファイルなし）
 
 ---
 
@@ -132,7 +132,7 @@ js/
 |----------|----------|
 | `drawer.js` | `querySelector`, `addEventListener`, `classList` |
 | `modal.js` | `showModal()`, `close()`, `querySelectorAll`, `forEach`, `img.src`, `img.alt` |
-| `swiper-init.js` | `new Swiper(...)`（CDN 読み込み後） |
+| `swiper.js` | `new Swiper(...)`（CDN 読み込み後） |
 
 ### step3（Works 複数カード）の授業上の扱い
 
@@ -150,14 +150,14 @@ js/
 
 ---
 
-## マークアップ要件（`finish`）
+## マークアップ要件（`materials/finish/portfolio/`）
 
 ### ドロワー
-- `.btn-nav`（ハンバーガー）、`.drawer`（`.g-nav`）、`.drawer-overlay`（任意）、`.is-open`
-- **全画面幅でドロワー**。`@media` によるナビ表示の切り替えはしない
+- `.btn-nav`（ハンバーガー）、`.g-nav`、`.is-open`
+- 768px未満はドロワー、768px以上は横並びナビ
 
 ### Works ＋ モーダル
-- `.works-grid` > `.works-card` ×4（各カードに `img` + メタ情報）
+- `.works-list` > `.works-list__item` > `.works-card` ×4（各カードに `img` + メタ情報）
 - `#works-dialog` > `#works-dialog-close` + `#works-dialog-img`
 
 ### ヒーロー（Swiper）
@@ -167,10 +167,10 @@ js/
 
 ## 制作順序（推奨ワークフロー）
 
-1. [x] **`finish/` HTML マークアップ**（2026-07-06 おおむね完了）
-2. [x] **`finish/` CSS 完成**（2026-07-10。Hero・モーダル CSS は JS 後に整える）
-3. [ ] **`finish/` JS 完成**
-4. [ ] `finish` から JS を抜き `start/` を作る
+1. [x] **`materials/finish/portfolio/` HTML マークアップ**
+2. [x] **`materials/finish/portfolio/` CSS**
+3. [x] **`materials/finish/portfolio/` JS**
+4. [x] `finish/portfolio` から JS を抜き `start/portfolio/` を作る
 5. [ ] `step1` ← drawer
 6. [ ] `step2` ← modal（1カード・srcコピー）
 7. [ ] `step3` ← modal に forEach 追加
@@ -184,9 +184,9 @@ js/
 |------|------|
 | トンマナ | グレースケール・ワイヤーフレーム、`Noto Sans JP` |
 | Works | カード UI、クリックで画像拡大、`src` コピー |
-| About / Skills | 静的表示 |
-| セクション順 | Hero → Works → About → Skills → Footer |
-| ドロワー | PC・SP ともドロワー（メディアクエリ切替なし） |
+| Profile / Skills | SkillsをProfile内に統合して静的表示 |
+| セクション順 | Hero → Works → Profile（Skills含む）→ Footer |
+| ナビ | 768px未満はドロワー、768px以上は横並び |
 | `aria-*` | 付けない |
 | アコーディオン | 不採用 |
 | jQuery | 紹介のみ |
