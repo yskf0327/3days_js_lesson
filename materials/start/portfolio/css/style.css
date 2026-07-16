@@ -613,3 +613,33 @@ section:not(.hero) {
   text-align: center;
   font-size: var(--font-size-sm);
 }
+
+.btn-pagetop {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  color: var(--color-text);
+  display: grid;
+  place-items: center;
+  position: fixed;
+  bottom: 71px;
+  right: var(--space-md);
+  background-color: var(--color-border);
+  opacity: 0;
+  visibility: hidden;
+  z-index: 3;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+
+  &.is-shown {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: initial;
+  }
+}
+
+@media (min-width:1060px) {
+  .btn-pagetop {
+    right: calc((100% - var(--container-max-width)) / 2)
+  }
+}

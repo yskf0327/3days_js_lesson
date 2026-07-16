@@ -622,7 +622,7 @@ section:not(.hero) {
   display: grid;
   place-items: center;
   position: fixed;
-  bottom: var(--space-md);
+  bottom: 71px;
   right: var(--space-md);
   background-color: var(--color-border);
   opacity: 0;
@@ -635,5 +635,11 @@ section:not(.hero) {
     opacity: 1;
     visibility: visible;
     pointer-events: initial;
+  }
+}
+
+@media (min-width:1060px) {
+  .btn-pagetop {
+    right: calc((100% - var(--container-max-width)) / 2)
   }
 }
