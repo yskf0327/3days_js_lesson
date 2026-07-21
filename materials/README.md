@@ -7,8 +7,10 @@
 |------|------|
 | `start/portfolio/` | 初日配布（静的 HTML/CSS、JS は空） |
 | `finish/portfolio/` | 最終完成形 |
+| `practice/` | 各コマのミニ練習 |
 | `steps/` | 日別到達点（未作成） |
 | [`start.md`](./start.md) | start の説明（講師用） |
 | [`finish.md`](./finish.md) | finish の説明（講師用） |
+| [`practice.md`](./practice.md) | ミニ練習の説明（講師用） |
 
 関連ドキュメント：`docs/agenda.md` / `docs/final_project.md` / `docs/design_brief.md`

@@ -100,9 +100,15 @@ materials/
 │   └── step3_works/portfolio/
 ├── finish/
 │   └── portfolio/
-└── practice/day1_console/   # 任意
+└── practice/                 # ミニ練習（解説→練習→本課題）
+    ├── day1_03_console/
+    ├── day1_04_dom/
+    ├── day1_05_classlist/
+    ├── day2_dialog_basic/
+    └── day3_foreach/         # 任意（進捗に応じて）
 ```
 
+詳細は `materials/practice.md`。
 ```
 js/
 ├── drawer.js
@@ -171,10 +177,10 @@ js/
 2. [x] **`materials/finish/portfolio/` CSS**
 3. [x] **`materials/finish/portfolio/` JS**
 4. [x] `finish/portfolio` から JS を抜き `start/portfolio/` を作る
-5. [ ] `step1` ← drawer
-6. [ ] `step2` ← modal（1カード・srcコピー）
-7. [ ] `step3` ← modal に forEach 追加
-8. [ ] 任意：`practice/day1_console/`
+5. [x] `materials/practice/` ミニ練習（day1〜day3）
+6. [ ] `step1` ← drawer
+7. [ ] `step2` ← modal（1カード・srcコピー）
+8. [ ] `step3` ← modal に forEach 追加
 
 ---
 
