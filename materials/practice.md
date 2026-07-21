@@ -53,4 +53,14 @@ practice/<name>/
 | 2日目開始時 | `day2_dialog_basic` |
 | 3日目 | `day3_foreach` は必要なら。なければ portfolio のみ |
 
+## 配布用ファイルの生成
+
+`answers/` と本ファイル（`*.md`）を除いた受講生配布用コピーを、上表の day 単位で `materials/practice-dist/` に生成する。
+
+```sh
+node materials/scripts/build-practice-dist.js
+```
+
+`practice-dist/` は生成物のため Git 管理外（`.gitignore`）。配布のたびに再実行する。
+
 関連: `docs/agenda.md` / `docs/final_project.md`
