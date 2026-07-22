@@ -102,8 +102,9 @@ materials/
 │   └── portfolio/
 └── practice/                 # ミニ練習（解説→練習→本課題）
     ├── day1_03_console/
-    ├── day1_04_dom/
-    ├── day1_05_classlist/
+    ├── day1_04_dom/          # querySelector・プロパティ（All / イベントなし）
+    ├── day1_05_events/
+    ├── day1_06_classlist/
     ├── day2_dialog_basic/
     └── day3_foreach/         # 任意（進捗に応じて）
 ```

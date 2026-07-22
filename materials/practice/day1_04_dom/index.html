@@ -4,15 +4,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>練習: DOM</title>
+  <title>練習: DOM（取得・プロパティ）</title>
   <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
   <main class="wrap">
-    <h1>練習: DOM</h1>
-    <p><code>#btn</code> をクリックすると、Console にメッセージが出るようにしましょう。</p>
-    <button type="button" id="btn" class="btn">クリック</button>
+    <h1>練習: DOM（取得・プロパティ）</h1>
+    <p>要素を取得し、<code>innerText</code> / <code>src</code> / <code>alt</code> / <code>href</code> を Console で確認・書き換えてみましょう。（この練習ではクリックイベントは使いません）</p>
+
+    <h2 id="heading" class="heading">見出しのテキスト</h2>
+    <p class="note">id と class の取り方を確認しましょう。<code>querySelectorAll</code> は 3日目で扱います。</p>
+
+    <figure class="media">
+      <img id="photo" class="photo" src="./images/photo-a.svg" alt="画像A">
+    </figure>
+
+    <p>
+      <a id="link" class="link" href="https://example.com/">example.com へのリンク</a>
+    </p>
   </main>
   <script src="./main.js"></script>
 </body>

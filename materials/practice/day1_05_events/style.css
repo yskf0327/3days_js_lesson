@@ -15,29 +15,16 @@ body {
   border: 1px solid #ccc;
 }
 
-.heading {
-  margin-block: 1rem 0.5rem;
-  font-size: 1.25rem;
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: 1px solid #333;
+  background: #fff;
+  cursor: pointer;
 }
 
-.note {
-  font-size: 0.9rem;
-  color: #555;
-}
-
-.media {
-  margin: 0 0 1rem;
-}
-
-.media img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  border: 1px solid #ccc;
-}
-
-.link {
-  color: #06c;
+.btn:hover {
+  background: #eee;
 }
 
 code {

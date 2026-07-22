@@ -58,10 +58,10 @@
 ※ 初版目標の「jQuery の基本構文がわかる」は、本クラスでは **上記の概要レベル** で充足するものとする。
 
 ### バニラJSで扱う範囲
-- `querySelector` / `querySelectorAll` / `addEventListener`
+- `querySelector` / `addEventListener`
 - `classList.add` / `remove` / `toggle`
 - モーダル：`showModal()` / `close()`（`<dialog>`）。画像の `src` / `alt` をカード内 `img` からコピー
-- Works 複数カード：`querySelectorAll` + `forEach`（3日目・進捗に応じて）
+- Works 複数カード：`querySelectorAll` + `forEach`（**3日目**・進捗に応じて。1〜2日目では扱わない）
 - `data-*` 属性・配列・`innerHTML` による動的生成は着地点に含めない
 
 ### 複数要素へのイベント登録（Works・3日目）
@@ -117,11 +117,11 @@ Works カードが複数あるため、1日目の「要素1つ＋クリック」
 | **1** | オリエンテーション | 講師自己紹介 / 「プログラム」とは（運動会・コンサートのプログラム＝**手順・設計図**のたとえ） / コンピュータプログラムとは（言語ごとの得意分野：HTMLは構造、CSSは見た目、**JSは動き** など） | いきなりコードを書かせない。デザイナーが「自分ごと」に感じられる導入 |
 | **2** | Webの仕組み（復習） | サーバ・クライアントの復習 / ブラウザが URL をリクエスト → レスポンス受信 → **HTML解析 → CSS適用 → JS実行 → 描画** の流れ | HTML/CSS 学習の延長として位置づける。「JS はブラウザの中で動く」と伝える土台 |
 | **3** | JavaScript とは | HTML・CSS・JS の役割分担 / `script` 読み込み / Console / **ミニ練習** `practice/day1_03_console` | 初めての「書いて動いた」体験 |
-| **4** | DOM と要素の取得 | DOM の概要 / **ミニ練習** `practice/day1_04_dom`（`querySelector` / `querySelectorAll` など取り方のパターン。イベントは付けない） | 「セレクタで部品を指定する」感覚。変数は必要最低限 |
-| **5** | ドロワー①（型＋実装開始） | 冒頭で短く **ミニ** `practice/day1_05_classlist`（`addEventListener` + `toggle`）→ portfolio のドロワー HTML/CSS（`.is-open`）確認 → **本課題** `drawer.js` を一緒に書き始める | classList はウォームアップ程度。残りはドロワーに充てる |
+| **4** | DOM（取得・プロパティ） | DOM の概要 / **ミニ練習** `practice/day1_04_dom`（`querySelector`、`innerText`・`src`・`alt`・`href` の確認と書き換え。**イベント・`querySelectorAll` は付けない**） | 取る・読む・書き換える。変数は必要最低限 |
+| **5** | ドロワー①（型＋実装開始） | 冒頭で短く **ミニ** `day1_05_events` → `day1_06_classlist` → portfolio のドロワー HTML/CSS（`.is-open`）確認 → **本課題** `drawer.js` を書き始める | イベントと classList はウォームアップ。残りはドロワー |
 | **6** | ドロワー②（実装・まとめ） | `drawer.js` 個人ワーク（TA 巡回） / リンククリックで閉じる等（任意） / **1日目のまとめ** | **初日の着地点**。5〜6コマで説明〜実装まで行う |
 
-**1日目で扱わないこと**（混乱を避けるため）：変数の深い説明、関数の書き方の解説、`forEach`、イベントオブジェクト、jQuery。
+**1日目で扱わないこと**（混乱を避けるため）：変数の深い説明、関数の書き方の解説、`querySelectorAll`、`forEach`、イベントオブジェクト、jQuery。
 
 ※ ドロワーは **5・6コマの2コマ分**。6コマだけだと説明＋実装が厳しい。
 ---
@@ -148,7 +148,7 @@ Works カードが複数あるため、1日目の「要素1つ＋クリック」
 
 | コマ | テーマ | 内容 | ねらい・メモ |
 |------|--------|------|--------------|
-| **1** | Works 全カード | `querySelectorAll` + `forEach` の型。任意で **ミニ** `practice/day3_foreach`、または portfolio 直書き | **遅れていればデモ＋`finish` 確認のみ** |
+| **1** | Works 全カード | **初めて** `querySelectorAll` + `forEach`。任意で **ミニ** `practice/day3_foreach`、または portfolio 直書き | **遅れていればデモ＋`finish` 確認のみ** |
 | **2** | Works 実装 | **本課題** `modal.js` を全カード対応（進捗に応じて） | カードごとに異なる画像が拡大されれば成功 |
 | **3** | ライブラリ・Swiper | CDN 読み込み / `swiper.js` 初期化（別ミニ不要） | バニラ JS 未完了でも Swiper で成功体験 |
 | **4** | jQuery（紹介のみ） | ドロワーと並べて見本表示（10〜15分） | 着地点に含めない |

@@ -2,12 +2,13 @@
 // answers/ と *.md（講師用）は除外する。配布タイミングは practice.md 参照。
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 
 const PRACTICE_DIR = path.join(__dirname, '..', 'practice');
 const DIST_DIR = path.join(__dirname, '..', 'practice-dist');
 
 const DAY_GROUPS = {
-  day1: ['day1_03_console', 'day1_04_dom', 'day1_05_classlist'],
+  day1: ['day1_03_console', 'day1_04_dom', 'day1_05_events', 'day1_06_classlist'],
   day2: ['day2_dialog_basic'],
   day3: ['day3_foreach'],
 };
@@ -29,6 +30,17 @@ function copyExcludingAnswersAndMd(srcDir, destDir) {
   }
 }
 
+function zipDayFolder(day) {
+  const src = path.join(DIST_DIR, day);
+  const out = path.join(DIST_DIR, `practice-${day}.zip`);
+  if (fs.existsSync(out)) fs.unlinkSync(out);
+
+  // Windows: PowerShell Compress-Archive（フォルダ直下の中身を zip に入れる）
+  const ps = `Compress-Archive -Path '${src}\\*' -DestinationPath '${out}' -Force`;
+  execSync(`powershell.exe -NoProfile -Command "${ps}"`, { stdio: 'inherit' });
+  console.log(`${path.basename(out)} を生成しました`);
+}
+
 fs.rmSync(DIST_DIR, { recursive: true, force: true });
 
 for (const [day, folders] of Object.entries(DAY_GROUPS)) {
@@ -42,6 +54,10 @@ for (const [day, folders] of Object.entries(DAY_GROUPS)) {
     copyExcludingAnswersAndMd(srcDir, destDir);
     console.log(`${day}/${folder} を生成しました`);
   }
+}
+
+for (const day of Object.keys(DAY_GROUPS)) {
+  zipDayFolder(day);
 }
 
 console.log(`\n完了: ${path.relative(process.cwd(), DIST_DIR)} に配布用ファイルを生成しました`);
