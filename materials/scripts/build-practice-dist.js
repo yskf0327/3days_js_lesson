@@ -1,4 +1,4 @@
-// materials/practice/ から受講生配布用のコピーを day 別に生成する。
+// materials/practice/ から受講生配布用のコピーを配布グループ別に生成する。
 // answers/ と *.md（講師用）は除外する。配布タイミングは practice.md 参照。
 const fs = require('fs');
 const path = require('path');
@@ -7,10 +7,10 @@ const { execSync } = require('child_process');
 const PRACTICE_DIR = path.join(__dirname, '..', 'practice');
 const DIST_DIR = path.join(__dirname, '..', 'practice-dist');
 
-const DAY_GROUPS = {
-  day1: ['day1_03_console', 'day1_04_dom', 'day1_05_events', 'day1_06_classlist'],
-  day2: ['day2_dialog_basic'],
-  day3: ['day3_foreach'],
+const GROUPS = {
+  1: ['01_console', '02_dom', '03_events', '04_classlist'],
+  2: ['05_dialog_basic'],
+  3: ['06_foreach'],
 };
 
 function copyExcludingAnswersAndMd(srcDir, destDir) {
@@ -30,9 +30,9 @@ function copyExcludingAnswersAndMd(srcDir, destDir) {
   }
 }
 
-function zipDayFolder(day) {
-  const src = path.join(DIST_DIR, day);
-  const out = path.join(DIST_DIR, `practice-${day}.zip`);
+function zipGroupFolder(group) {
+  const src = path.join(DIST_DIR, String(group));
+  const out = path.join(DIST_DIR, `practice-${group}.zip`);
   if (fs.existsSync(out)) fs.unlinkSync(out);
 
   // Windows: PowerShell Compress-Archive（フォルダ直下の中身を zip に入れる）
@@ -43,21 +43,21 @@ function zipDayFolder(day) {
 
 fs.rmSync(DIST_DIR, { recursive: true, force: true });
 
-for (const [day, folders] of Object.entries(DAY_GROUPS)) {
+for (const [group, folders] of Object.entries(GROUPS)) {
   for (const folder of folders) {
     const srcDir = path.join(PRACTICE_DIR, folder);
     if (!fs.existsSync(srcDir)) {
       console.warn(`skip: ${folder} が見つかりません (${srcDir})`);
       continue;
     }
-    const destDir = path.join(DIST_DIR, day, folder);
+    const destDir = path.join(DIST_DIR, group, folder);
     copyExcludingAnswersAndMd(srcDir, destDir);
-    console.log(`${day}/${folder} を生成しました`);
+    console.log(`${group}/${folder} を生成しました`);
   }
 }
 
-for (const day of Object.keys(DAY_GROUPS)) {
-  zipDayFolder(day);
+for (const group of Object.keys(GROUPS)) {
+  zipGroupFolder(group);
 }
 
 console.log(`\n完了: ${path.relative(process.cwd(), DIST_DIR)} に配布用ファイルを生成しました`);

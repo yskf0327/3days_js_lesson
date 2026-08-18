@@ -101,12 +101,12 @@ materials/
 ├── finish/
 │   └── portfolio/
 └── practice/                 # ミニ練習（解説→練習→本課題）
-    ├── day1_03_console/
-    ├── day1_04_dom/          # querySelector・プロパティ（All / イベントなし）
-    ├── day1_05_events/
-    ├── day1_06_classlist/
-    ├── day2_dialog_basic/
-    └── day3_foreach/         # 任意（進捗に応じて）
+    ├── 01_console/
+    ├── 02_dom/          # querySelector・プロパティ（All / イベントなし）
+    ├── 03_events/
+    ├── 04_classlist/
+    ├── 05_dialog_basic/
+    └── 06_foreach/         # 任意（進捗に応じて）
 ```
 
 詳細は `materials/practice.md`。
