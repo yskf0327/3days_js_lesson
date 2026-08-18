@@ -1,3 +1,6 @@
 {
-  "liveServer.settings.port": 5503
+  "liveServer.settings.port": 5503,
+  "markdown.marp.themes": [
+    "materials/slides/theme.css"
+  ]
 }

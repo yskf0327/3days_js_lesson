@@ -1,0 +1,244 @@
+/* @theme vscode-dark */
+
+@import 'default';
+
+:root {
+  /* スライド全体（Light+） */
+  --vscode-bg: #f3f3f3;
+  --vscode-bg-alt: #f3f3f3;
+  --vscode-fg: #1e1e1e;
+  --vscode-fg-alt: hsl(0, 0%, 50%);
+  --vscode-blue: #005fb8;
+  --vscode-cyan: #267f99;
+  --vscode-accent: #007acc;
+  --vscode-comment: #008000;
+  --vscode-border: #d4d4d4;
+
+  /* コードブロック（Dark+ 固定） */
+  --code-bg: #1e1e1e;
+  --code-fg: #d4d4d4;
+  --code-string: #ce9178;
+  --code-border: #3c3c3c;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+section {
+  position: relative;
+  background: var(--vscode-bg);
+  color: var(--vscode-fg);
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 28px;
+  padding: 60px;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--vscode-blue);
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+h1 {
+  font-size: 44px;
+  font-weight: 900;
+}
+
+h2 {
+  font-size: 34px;
+  font-weight: 900;
+}
+
+img {
+  max-width: 100%;
+}
+
+ul,
+ol {
+  padding-inline-start: 1rem;
+  margin-inline-start: 1rem;
+}
+
+*+:is(ul, ol) {
+  margin-block: 1.2rem;
+}
+
+/* 本文ページ：見出しをページ上部に固定し、下に罫線を引く */
+/* section:not(.cover):not(.section) {
+  padding-top: 160px;
+}
+
+section:not(.cover):not(.section)>h1,
+section:not(.cover):not(.section)>h2 {
+  position: absolute;
+  top: 60px;
+  left: 60px;
+  right: 60px;
+  margin: 0;
+  border-bottom: 3px solid var(--vscode-blue);
+  padding-bottom: 0.3em;
+} */
+
+section:not(.cover):not(.section) {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  header {
+    color: var(--vscode-blue);
+    font-weight: 900;
+    font-size: 40px;
+    width: 100%;
+    padding-block-end: 1rem;
+    margin-block-end: 2rem;
+    box-sizing: border-box;
+    position: relative;
+    top: 0;
+    left: 0;
+
+    &::before,
+    &::after {
+      content: '';
+      display: block;
+      height: 3px;
+      width: 100%;
+      background-color: var(--vscode-border);
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
+
+    &::after {
+      background-color: var(--vscode-blue);
+      width: 20%;
+    }
+  }
+
+  .contents {
+    box-sizing: border-box;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  .contents img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0 auto;
+    object-fit: contain;
+  }
+
+}
+
+ul,
+ol {
+  line-height: 1.7;
+}
+
+a {
+  color: var(--vscode-cyan);
+}
+
+code {
+  background: var(--code-bg);
+  color: var(--code-string);
+  font-family: 'Cascadia Code', Consolas, monospace;
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+}
+
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: 6px;
+  /* シンタックスハイライトの色は light-dark() で定義されており、
+     ページ全体が Light+ (白背景) のため何もしないと明色側の低コントラストな配色が
+     コードブロックの黒背景に乗ってしまう。ここだけ dark に固定して解決する */
+  color-scheme: dark;
+  line-height: 1.6;
+  font-size: 26px;
+}
+
+pre code {
+  background: transparent;
+  color: var(--code-fg);
+}
+
+footer,
+section::after {
+  color: var(--vscode-fg-alt);
+}
+
+/* 表紙 */
+section.cover {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+section.cover h1 {
+  font-size: 54px;
+  border-bottom: none;
+  margin-bottom: 0.2em;
+}
+
+section.cover .subtitle {
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--vscode-fg);
+  margin: 0;
+}
+
+section.cover .meta {
+  margin-top: 2.5em;
+  font-size: 20px;
+  color: var(--vscode-fg-alt);
+  line-height: 1.8;
+}
+
+/* 中表紙（セクション見出し） */
+section.section {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: var(--vscode-bg-alt);
+}
+
+section.section h1 {
+  font-size: 50px;
+  border-bottom: none;
+  text-align: center;
+}
+
+.lead {
+  font-size: 40px;
+  font-weight: 900;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding-block-end: 2rem;
+}
+
+.row {
+  display: flex;
+  gap: 1rem;
+
+  * {
+    flex: 1;
+  }
+}
+
+blockquote {
+  font-size: 24px;
+  border-inline-start-color: var(--vscode-comment);
+  background-color: color-mix(in srgb, var(--vscode-comment), #ffffff 88%);
+  padding-block: 0.8rem;
+  color: var(--code-bg);
+}
