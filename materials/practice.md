@@ -58,7 +58,7 @@ practice/<name>/
 
 ## 配布用ファイルの生成
 
-`answers/` と本ファイル（`*.md`）を除いた受講生配布用コピーを、上表のグループ単位で `materials/practice-dist/` に生成する。あわせてグループ別 zip も作る。
+`answers/` と本ファイル（`*.md`）を除いた受講生配布用コピーを、上表のグループ単位で `materials/practice-dist/` にフォルダのまま生成する（zip化はしない）。
 
 ```sh
 node materials/scripts/build-practice-dist.js
@@ -68,12 +68,9 @@ node materials/scripts/build-practice-dist.js
 
 ```text
 materials/practice-dist/
-├── 1/ …              # 展開済みフォルダ
+├── 1/    # 受講生へ渡す用
 ├── 2/
-├── 3/
-├── practice-1.zip    # 受講生へ渡す用
-├── practice-2.zip
-└── practice-3.zip
+└── 3/
 ```
 
 `practice-dist/` は生成物のため Git 管理外（`.gitignore`）。配布のたびに再実行する。

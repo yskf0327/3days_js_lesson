@@ -2,7 +2,6 @@
 // answers/ と *.md（講師用）は除外する。配布タイミングは practice.md 参照。
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
 
 const PRACTICE_DIR = path.join(__dirname, '..', 'practice');
 const DIST_DIR = path.join(__dirname, '..', 'practice-dist');
@@ -30,17 +29,6 @@ function copyExcludingAnswersAndMd(srcDir, destDir) {
   }
 }
 
-function zipGroupFolder(group) {
-  const src = path.join(DIST_DIR, String(group));
-  const out = path.join(DIST_DIR, `practice-${group}.zip`);
-  if (fs.existsSync(out)) fs.unlinkSync(out);
-
-  // Windows: PowerShell Compress-Archive（フォルダ直下の中身を zip に入れる）
-  const ps = `Compress-Archive -Path '${src}\\*' -DestinationPath '${out}' -Force`;
-  execSync(`powershell.exe -NoProfile -Command "${ps}"`, { stdio: 'inherit' });
-  console.log(`${path.basename(out)} を生成しました`);
-}
-
 fs.rmSync(DIST_DIR, { recursive: true, force: true });
 
 for (const [group, folders] of Object.entries(GROUPS)) {
@@ -56,8 +44,4 @@ for (const [group, folders] of Object.entries(GROUPS)) {
   }
 }
 
-for (const group of Object.keys(GROUPS)) {
-  zipGroupFolder(group);
-}
-
-console.log(`\n完了: ${path.relative(process.cwd(), DIST_DIR)} に配布用ファイルを生成しました`);
+console.log(`\n完了: ${path.relative(process.cwd(), DIST_DIR)} に配布用ファイルを生成しました（フォルダのまま・zip化なし）`);

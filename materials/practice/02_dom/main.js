@@ -1,4 +1,4 @@
-// --- 要素の取得（querySelector のみ。All は 3日目）---
+// --- 要素の取得（querySelector）---
 // 1. #heading を取得して console.log する
 // 2. .photo を取得して console.log する
 // 3. #link を取得して console.log する
