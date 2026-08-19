@@ -1,0 +1,645 @@
+@charset "utf-8";
+
+/* ==========================================================================
+   Design tokens（カスタムプロパティ）
+   - 余白: ratio 1.5（Perfect Fifth）
+   - フォントサイズ: clamp による流体タイポグラフィ（320px〜980px）
+   - 基準: 1rem = 16px
+   - カラー: design_brief のグレースケール（アクセント色なし）
+   ========================================================================== */
+
+:root {
+  /* --------------------------------------------------------------------------
+     Color — グレースケール（design_brief）
+     -------------------------------------------------------------------------- */
+  --color-bg: #ffffff;
+  --color-bg-sub: #f5f5f5;
+  --color-border: #cccccc;
+  --color-placeholder: #e0e0e0;
+  --color-text-muted: #888888;
+  --color-text: #333333;
+  --color-text-strong: #111111;
+
+  /* --------------------------------------------------------------------------
+     Space — Modular Scale（--space-unit × ratio^n）
+     ratio: 1.5 / unit: 1rem
+     -------------------------------------------------------------------------- */
+  --space-ratio: 1.5;
+  --space-unit: 1rem;
+
+  --space-2xs: calc(var(--space-unit) / var(--space-ratio) / var(--space-ratio));
+  /* 0.44rem */
+  --space-xs: calc(var(--space-unit) / var(--space-ratio));
+  /* 0.67rem */
+  --space-sm: var(--space-unit);
+  /* 1.00rem */
+  --space-md: calc(var(--space-unit) * var(--space-ratio));
+  /* 1.50rem */
+  --space-lg: calc(var(--space-unit) * var(--space-ratio) * var(--space-ratio));
+  /* 2.25rem */
+  --space-xl: calc(var(--space-lg) * var(--space-ratio));
+  /* 3.38rem */
+  --space-2xl: calc(var(--space-xl) * var(--space-ratio));
+  /* 5.06rem */
+  --space-3xl: calc(var(--space-2xl) * var(--space-ratio));
+  /* 7.59rem */
+  --space-4xl: calc(var(--space-3xl) * var(--space-ratio));
+  /* 11.39rem */
+
+  /* --------------------------------------------------------------------------
+     Font size — Fluid typography（clamp）
+     320px（20rem）〜 980px（61.25rem）の間で線形スケール
+     -------------------------------------------------------------------------- */
+  --font-fluid-min: 20rem;
+  /* 320px */
+  --font-fluid-max: 61.25rem;
+  /* 980px（--container-max-width と揃える） */
+  --font-ratio: 1.25;
+  /* 各段の max 値の比率参考 */
+
+  --font-size-sm: clamp(0.75rem, 0.726rem + 0.758vw, 0.8rem);
+  /* 12px 〜 12.8px — 補足・日付 */
+  --font-size-body: clamp(0.9375rem, 0.907rem + 0.947vw, 1rem);
+  /* 15px 〜 16px — 本文 */
+  --font-size-subheading: clamp(1.0625rem, 1.02rem + 0.42vw, 1.25rem);
+  /* 17px 〜 20px — h3・サブ見出し（body と heading の間） */
+  --font-size-heading: clamp(1.8rem, 1.35rem + 0.6vw, 2rem);
+  /* 29px 〜 32px — セクション見出し（英語・大） */
+  --font-size-copy: clamp(1.75rem, 1.415rem + 1.047vw, 2.441rem);
+  /* 28px 〜 39px — キャッチコピー・ロゴ */
+
+  /* --------------------------------------------------------------------------
+     Line height
+     -------------------------------------------------------------------------- */
+  --line-height-body: 1.8;
+  --line-height-heading: 1.5;
+  --line-height-tight: 1;
+  /* 見出し以外（ボタン・バッジ等） */
+
+  /* --------------------------------------------------------------------------
+     Layout
+     -------------------------------------------------------------------------- */
+  --container-max-width: 980px;
+  --breakpoint-md: 768px;
+
+  /* --------------------------------------------------------------------------
+     Shape & shadow
+     -------------------------------------------------------------------------- */
+  --radius: 8px;
+  --shadow-card: 0 4px 16px rgb(0 0 0 / 0.08);
+  --shadow-header: 0 4px 8px -2px rgb(0 0 0 / 0.1);
+  /* 下方向のみ（sticky ヘッダー用） */
+}
+
+/* ==========================================================================
+   base style
+   ========================================================================== */
+html,
+body {
+  /* スムーススクロール */
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Noto Sans JP", sans-serif;
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+
+  /* メニュー・モーダル展開時、背景のスクロールを停止 */
+  &.is-open,
+  &:has(.works-dialog[open]) {
+    overflow-y: hidden;
+  }
+}
+
+:where(h1, h2, h3, h4, h5, h6) {
+  line-height: var(--line-height-heading);
+}
+
+img {
+  max-width: 100%;
+  vertical-align: bottom;
+}
+
+a {
+  color: currentColor;
+  text-decoration: none;
+}
+
+/* ==========================================================================
+   layout
+   ========================================================================== */
+section.hero+section {
+  padding-block-start: var(--space-2xl);
+}
+
+section:not(.hero) {
+  padding-block: var(--space-xl);
+
+  & section:has(h3) {
+    padding-block: var(--space-md);
+  }
+}
+
+@media screen and (min-width:768px) {
+  section:not(.hero) {
+    padding-block: var(--space-2xl);
+  }
+}
+
+/* コンテンツ幅制御用クラス */
+.container {
+  width: min(92%, var(--container-max-width));
+  margin-inline: auto;
+}
+
+/* ==========================================================================
+   logo / heading
+   ========================================================================== */
+.logo {
+  font-size: var(--font-size-heading);
+  line-height: 0;
+}
+
+.section-title {
+  font-size: var(--font-size-body);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--color-text);
+
+  &::before {
+    content: attr(data-title-en);
+    font-size: var(--font-size-heading);
+    text-transform: uppercase;
+    color: var(--color-text-strong);
+  }
+
+  &+* {
+    margin-block-start: var(--space-xl);
+  }
+}
+
+.section-title--sub {
+  font-size: var(--font-size-subheading);
+  display: flex;
+  gap: var(--space-2xs);
+
+  &+* {
+    margin-block-start: var(--space-sm);
+  }
+
+  &::before,
+  &::after {
+    content: '-';
+  }
+}
+
+/* ==========================================================================
+   utility
+   ========================================================================== */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ==========================================================================
+   header / nav
+   ========================================================================== */
+.header {
+  padding-block: var(--space-sm);
+  background-color: var(--color-bg);
+  position: sticky;
+  top: 0;
+  box-shadow: var(--shadow-header);
+  z-index: 2;
+}
+
+.header__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.g-nav {
+  position: fixed;
+  z-index: 2;
+  inset: 0 -100% 0 100%;
+  background-color: rgba(69, 69, 69, 0.9);
+  transition: translate 0.3s ease-in-out;
+}
+
+@media screen and (min-width:768px) {
+  .g-nav {
+    position: static;
+    background-color: transparent;
+  }
+}
+
+.g-nav__inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  gap: var(--space-xl);
+  padding-inline: 4%;
+}
+
+@media screen and (min-width:768px) {
+  .g-nav__inner {
+    flex-direction: row;
+  }
+}
+
+.g-nav__item {
+  border-block-end: 1px dashed var(--color-text-muted);
+  padding-inline-end: var(--space-xs);
+}
+
+@media screen and (min-width:768px) {
+  .g-nav__item {
+    border: none;
+    padding: 0;
+  }
+}
+
+.g-nav__link {
+  display: block;
+  text-align: right;
+  font-size: var(--font-size-heading);
+  text-transform: uppercase;
+  color: var(--color-bg-sub);
+}
+
+@media screen and (min-width:768px) {
+  .g-nav__link {
+    font-size: var(--font-size-body);
+    color: currentColor;
+  }
+}
+
+/* --------------------------------------------------------------------------
+     ハンバーガーボタン
+   -------------------------------------------------------------------------- */
+.btn-nav {
+  position: relative;
+  z-index: 3;
+  width: 45px;
+  height: 45px;
+}
+
+@media screen and (min-width:768px) {
+  .btn-nav {
+    display: none;
+  }
+}
+
+.btn-nav__line {
+  display: block;
+  width: 80%;
+  height: 1px;
+  background-color: currentColor;
+  margin: auto;
+  position: relative;
+  transition-property: background-color, rotate;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+
+  &::before,
+  &::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: currentColor;
+    position: absolute;
+    transition-property: background-color, rotate, top;
+    transition-duration: inherit;
+    transition-timing-function: inherit;
+  }
+
+  &::before {
+    top: -10px;
+  }
+
+  &::after {
+    top: 10px;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+     メニュー展開時のスタイル
+   -------------------------------------------------------------------------- */
+.is-open {
+  .g-nav {
+    translate: -100% 0;
+  }
+
+  .btn-nav__line {
+    background-color: transparent;
+
+    &::before,
+    &::after {
+      top: 0;
+      background-color: var(--color-bg-sub);
+    }
+
+    &::before {
+      rotate: 30deg;
+    }
+
+    &::after {
+      rotate: -30deg;
+    }
+  }
+}
+
+/* ==========================================================================
+   hero / Swiper 
+   ========================================================================== */
+.hero {
+  height: 500px;
+}
+
+.swiper {
+  height: 100%;
+
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: var(--color-text);
+  background-color: rgba(255, 255, 255, 0.5);
+  height: var(--font-size-heading);
+  width: var(--font-size-heading);
+  border-radius: 50%;
+  padding: var(--space-2xs);
+}
+
+/* ==========================================================================
+   works / works-card /
+   ========================================================================== */
+.works-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-lg) var(--space-sm);
+}
+
+@media screen and (min-width:768px) {
+  .works-list {
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: var(--space-lg) var(--space-md);
+
+  }
+}
+
+.works-list__item {
+  display: contents;
+}
+
+.works-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  height: 100%;
+  cursor: pointer;
+  border: 1px solid var(--color-border);
+}
+
+.works-card__img {
+  aspect-ratio: 1 / 1;
+  position: relative;
+
+  &::after {
+    pointer-events: none;
+    content: "+";
+    font-size: var(--font-size-body);
+    color: var(--color-text);
+    line-height: var(--line-height-tight);
+    width: 1.5rem;
+    height: 1.5rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    position: absolute;
+    right: var(--space-2xs);
+    top: var(--space-2xs);
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+  }
+}
+
+.works-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  flex-grow: 1;
+  padding: 0 var(--space-2xs) var(--space-2xs);
+}
+
+.works-card__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+}
+
+.works-card__title {
+  font-weight: normal;
+  font-size: var(--font-size-body);
+  color: var(--color-text-strong);
+}
+
+.works-card__cat {
+  font-size: var(--font-size-sm);
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.works-card__badge {
+  display: inline-block;
+  line-height: var(--line-height-tight);
+  font-size: var(--font-size-sm);
+  color: var(--color-bg);
+  background-color: var(--color-text-muted);
+  padding: var(--space-2xs) var(--space-xs);
+}
+
+.works-card__meta {
+  font-size: var(--font-size-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+
+  dt {
+    font-weight: normal;
+    color: var(--color-text-muted);
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+
+    li:not(:last-of-type)::after {
+      content: ",";
+      display: inline-block;
+      margin-inline-end: var(--space-2xs);
+    }
+  }
+}
+
+.works-dialog {
+  padding: 0;
+  max-width: var(--container-max-width);
+
+  &::backdrop {
+    background-color: rgba(69, 69, 69, 0.5);
+  }
+}
+
+.works-dialog__content {
+  position: relative;
+}
+
+.works-dialog__close-btn {
+  position: absolute;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  top: var(--space-xs);
+  right: var(--space-xs);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+
+/* ==========================================================================
+   profile / skills
+   ========================================================================== */
+.profile__contents {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  line-height: 1;
+  width: fit-content;
+  margin-inline: auto;
+}
+
+@media screen and (min-width:768px) {
+  .profile__contents {
+    flex-direction: row;
+    gap: var(--space-xl);
+  }
+
+}
+
+
+.profile__name {
+  font-size: var(--font-size-heading);
+}
+
+.profile__role {
+  margin-block-start: var(--space-xs);
+}
+
+.profile__text {
+  margin-block-start: var(--space-md);
+  line-height: var(--line-height-body);
+}
+
+.profile__img {
+  display: block;
+  width: 220px;
+  height: 220px;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 50%;
+  margin: auto;
+}
+
+.skills-list {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.skills-list__badge {
+  display: inline-block;
+  background-color: var(--color-text-muted);
+  color: var(--color-bg);
+  border-radius: var(--radius);
+  padding: var(--space-2xs) var(--space-xs);
+  line-height: var(--line-height-tight);
+}
+
+/* ==========================================================================
+   footer
+   ========================================================================== */
+.footer {
+  background-color: var(--color-bg-sub);
+  padding-block: var(--space-md);
+}
+
+.copyright {
+  text-align: center;
+  font-size: var(--font-size-sm);
+}
+
+.btn-pagetop {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  color: var(--color-text);
+  display: grid;
+  place-items: center;
+  position: fixed;
+  bottom: 71px;
+  right: var(--space-md);
+  background-color: var(--color-border);
+  opacity: 0;
+  visibility: hidden;
+  z-index: 3;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+
+  &.is-shown {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: initial;
+  }
+}
+
+@media (min-width:1060px) {
+  .btn-pagetop {
+    right: calc((100% - var(--container-max-width)) / 2)
+  }
+}

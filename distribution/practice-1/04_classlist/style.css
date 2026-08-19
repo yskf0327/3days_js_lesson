@@ -1,0 +1,48 @@
+body {
+  font-family: sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 2rem;
+  background: #f5f5f5;
+  color: #222;
+}
+
+.wrap {
+  max-width: 40rem;
+  margin-inline: auto;
+  padding: 1.5rem;
+  background: #fff;
+  border: 1px solid #ccc;
+}
+
+.btn {
+  display: inline-block;
+  margin-block-end: 1rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #333;
+  background: #fff;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #eee;
+}
+
+.box {
+  padding: 1.5rem;
+  border: 2px solid #999;
+  background: #eee;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.box.is-active {
+  border-color: #222;
+  background: #333;
+  color: #fff;
+}
+
+code {
+  font-size: 0.9em;
+  background: #eee;
+  padding: 0.1em 0.35em;
+}
