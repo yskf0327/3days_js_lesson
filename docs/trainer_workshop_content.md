@@ -15,14 +15,15 @@
 | 1 | `querySelector()` | CSSセレクタに複数該当してもDOM順で最初の1件だけ返す仕様。`querySelectorAll()`との対比（NodeListが返る） |
 | 2 | `addEventListener()` vs `onclick` | 同じ要素に複数ハンドラを登録できる／HTML属性への直書きと分離できる（構造と挙動の関心分離） |
 | 3 | `classList.add()/remove()/toggle()` vs `style`直接操作 | 見た目の定義をCSS側に残せる（CSSとJSの責務分離）。デザイナーとの協業・保守性の観点で説明しやすい |
-| 4 | `<dialog>`の`showModal()`/`close()` | 自作モーダル（`position:fixed`＋オーバーレイ）ではなく標準要素を使う理由（`backdrop`、Escで閉じる等が標準機能でついてくる） |
-| 5 | `querySelectorAll()` + `forEach()` | NodeListは配列そのものではないが`forEach()`が使える理由（Iterableである点に軽く触れる） |
+| 4 | 要素間のデータ受け渡し（クロージャ） | なぜ`image.src`を`dialogImage.src`に代入するだけで別要素に反映されるか。クリックハンドラがどの`image`かをどう覚えているか。**冒頭でスコープ／クロージャを知っているか前提確認を行う**（2日目最大の難所、[[project_js_lesson_feedback_2026-08]]参照） |
+| 5 | `<dialog>`の`showModal()`/`close()` | 自作モーダル（`position:fixed`＋オーバーレイ）ではなく標準要素を使う理由（`backdrop`、Escで閉じる等が標準機能でついてくる） |
+| 6 | `querySelectorAll()` + `forEach()` | NodeListは配列そのものではないが`forEach()`が使える理由（Iterableである点に軽く触れる） |
 
 ## B. 「対象外にした理由」を説明できるようにする項目
 
 | # | 項目 | なぜ扱わないか（説明の芯） |
 |---|---|---|
-| 1 | イベント委譲 | 「親要素にリスナーを1つ付けて子要素の判別をする」という発想は、初心者には理解コストが高い。3日間では「型の反復」を優先 |
+| 1 | イベント委譲（モーダル実装のオプションとしてのイベントバブリング） | 「親要素にリスナーを1つ付けて子要素の判別をする」という発想は、初心者には理解コストが高い。3日間では「型の反復」を優先。モーダルの代替実装コード例も育成講師向けに掲載 |
 | 2 | `aria-*`属性 | 重要性は認めつつ、JS実装そのものに集中させるためのカリキュラム上の割り切り |
 | 3 | 配列からのHTML動的生成 | テンプレートリテラルや`innerHTML`挿入はプログラミング色が強く、Webデザイナー養成科の目標から外れる |
 | 4 | タブメニュー・アコーディオン | UI選定自体の話（`docs/design_brief.md`のUX文脈判断）。JSの技術的な対象外とは理由の質が違う点を区別して説明 |
@@ -72,7 +73,30 @@ bodyElm.classList.toggle('is-open');
 .is-open .g-nav { display: block; }
 ```
 
-### A-4. `<dialog>`の`showModal()`/`close()`
+### A-4. 要素間のデータ受け渡し（クロージャ）
+
+**前提確認**：本題に入る前に「スコープ」「クロージャ」という言葉を知っているか出野先生・辻野先生に確認する。知っていれば軽い確認のみ（2〜3分）で次へ進む。知らない／怪しい場合は下記の説明を簡単に補う（+5分程度、座学パートのバッファで吸収）。
+
+**想定質問**：「`image`って`forEach`の外では定義されていないのに、クリックしたときになんで使えるんですか？」／「3枚とも同じ`dialogImage`に書き込んでいるのに、なぜ表示が混ざらないんですか？」
+
+**回答の芯**：
+- 関数は、自分が定義された場所から見える変数を、実行されるときまで覚え続ける（クロージャ）。`forEach()`のコールバックが1回呼ばれるごとに、その回専用の`image`が新しく作られ、中の`addEventListener`のクリックハンドラはその`image`を覚えたままDOMにぶら下がる。だから何枚目の画像をクリックしても正しい`image`が使われる。
+- `dialogImage.src = image.src;`は特別な受け渡し機構ではなく、ただのプロパティ代入（値のコピー）。クリックハンドラが`image`（クリックされた画像）と`dialogImage`（モーダル内の画像、共有の1つ）の両方に同時にアクセスできるため、この1行でコピーしているように見える。`dialogImage`側は1つしかないので、クリックのたびに正しく上書きされる。
+
+**教材内の該当コード**（`materials/finish/portfolio/js/modal.js`）
+```js
+worksImages.forEach((image) => {
+  image.addEventListener('click', () => {
+    dialogImage.src = image.src;
+    dialogImage.alt = image.alt;
+    dialog.showModal();
+  });
+});
+```
+
+**受講生には教えない**：`docs/agenda.md`で1日目に「変数の深い説明」を明示的に対象外としている方針と一致させ、スコープ・クロージャは受講生への新規教材化はしない。あくまで育成講師が質問に答えるための裏側知識として扱う。
+
+### A-5. `<dialog>`の`showModal()`/`close()`
 
 **想定質問**：「モーダルは`position: fixed`の`div`で自作するのをよく見ますが、なぜ`dialog`タグを使うんですか？」
 
@@ -91,7 +115,7 @@ dialogCloseBtn.addEventListener('click', () => {
 });
 ```
 
-### A-5. `querySelectorAll()` + `forEach()`
+### A-6. `querySelectorAll()` + `forEach()`
 
 **想定質問**：「`querySelectorAll()`で取得したものは配列じゃないんですか？なぜ`forEach()`が使えるんですか？」
 
@@ -108,11 +132,31 @@ navLinks.forEach((link) => {
 
 ## B. 詳細（想定質問・回答）
 
-### B-1. イベント委譲
+### B-1. イベント委譲（モーダル実装のオプションとしてのイベントバブリング）
 
 **想定質問**：「カードが増えるたびに`forEach()`で全部にリスナーをつけるのは非効率では？親要素1つにイベントをつければいいのでは？」
 
 **回答の芯**：その発想（イベント委譲）は正しい。ただし親要素1つにリスナーを付け、`event.target`（や`closest()`）でクリックされた子要素を判別するロジックは初心者には理解コストが高い。3日間カリキュラムでは「取得→クリック→`classList`」という1つの型を反復して体に馴染ませることを優先し、あえて扱わない。口頭または短いデモに留める。
+
+**育成講師が知っておくべき実装オプション**：モーダル（`modal.js`）は教材では`forEach()`で全`img`に個別にリスナーを付けているが、イベントバブリング（クリックが子要素→親要素へ伝播する仕組み）を使って`.works-list`に1つだけリスナーを付ける実装も可能。案件や質問対応で聞かれた場合に備え、コードの形を知っておく。
+
+```js
+const worksList = document.querySelector('.works-list');
+
+worksList.addEventListener('click', (event) => {
+  const image = event.target.closest('.works-card__img img');
+  if (!image) return; // img以外がクリックされたら何もしない
+
+  dialogImage.src = image.src;
+  dialogImage.alt = image.alt;
+  dialog.showModal();
+});
+```
+
+**教材版との違い（説明のポイント）**：
+- リスナーの数：`forEach()`版は画像の枚数分（N個）、バブリング版は`.works-list`に1個だけ
+- クリックされた要素の特定：`forEach()`版は[[A-4]]のクロージャで`image`を暗黙に区別。バブリング版は`event.target`から`closest()`で明示的に判別する必要がある
+- 初心者への説明コスト：`event.target`・`closest()`・「関係ない要素がクリックされたら無視する」というガード処理（`if (!image) return;`）が追加で必要になり、[[A-4]]より抽象度が上がる。これが対象外にした理由の芯
 
 ### B-2. `aria-*`属性
 
@@ -135,4 +179,5 @@ navLinks.forEach((link) => {
 ## 今後の詰め
 
 - [x] A・B各項目の説明文・具体例（コードスニペット等）を追加
-- [ ] 各項目の想定所要時間を見積もり、4時間全体の時間配分に反映
+- [x] 内容の過不足チェック（2026-08-24）→ A-4「要素間のデータ受け渡し（クロージャ）」を新設。モーダルの属性値コピー部分（最大の難所）の裏側を扱う項目が抜けていたため
+- [x] 各項目の想定所要時間を見積もり、4時間全体の時間配分に反映 → `docs/trainer_workshop_brief.md`に座学70分（A-4のスコープ前提確認バッファ含む）として反映

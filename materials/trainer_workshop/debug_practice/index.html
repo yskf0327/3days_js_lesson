@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>コードレビュー練習：よくあるミスパターン</title>
+  <style>
+    body { font-family: sans-serif; padding: 24px; line-height: 1.6; max-width: 640px; }
+    section.practice { border: 1px solid #ccc; padding: 16px; margin-bottom: 16px; }
+    section.practice h2 { margin-top: 0; font-size: 1rem; }
+    .panel-1.is-open { background: #d7f5d0; padding: 8px; }
+    .card-3.is-active { background: #cfe8ff; }
+    .box-6.is-active { background: #ffe08a; padding: 8px; }
+  </style>
+  <script>
+    // ⑤ スクリプトの読み込み位置ミス（body内の要素がまだ存在しないタイミングで取得している）
+    const openBtn5 = document.querySelector('.open-btn-5');
+    openBtn5.addEventListener('click', () => {
+      document.querySelector('.message-5').hidden = false;
+    });
+  </script>
+</head>
+<body>
+  <h1>コードレビュー練習：よくあるミスパターン</h1>
+  <p>①〜⑥それぞれに1つずつ意図的なバグが仕込まれています。コンソールを開いて、何が起きているか探してみてください。（`docs/trainer_workshop_student_qa.md`のミスパターン一覧に対応）</p>
+
+  <section class="practice">
+    <h2>① class名の表記ゆれ</h2>
+    <button class="toggle-btn-1" type="button">開閉</button>
+    <p class="panel-1">クリックで表示/非表示が切り替わるはず</p>
+  </section>
+
+  <section class="practice">
+    <h2>② セレクタの記号忘れ</h2>
+    <button id="open-btn-2" type="button">開く</button>
+    <p class="message-2" hidden>開きました</p>
+  </section>
+
+  <section class="practice">
+    <h2>③ querySelector() と querySelectorAll() の混同</h2>
+    <ul class="card-list-3">
+      <li class="card-3" tabindex="0">カード1</li>
+      <li class="card-3" tabindex="0">カード2</li>
+      <li class="card-3" tabindex="0">カード3</li>
+    </ul>
+  </section>
+
+  <section class="practice">
+    <h2>④ イベント名のタイプミス</h2>
+    <button class="alert-btn-4" type="button">クリックしてください</button>
+  </section>
+
+  <section class="practice">
+    <h2>⑤ スクリプトの読み込み位置</h2>
+    <button class="open-btn-5" type="button">開く</button>
+    <p class="message-5" hidden>開きました</p>
+  </section>
+
+  <section class="practice">
+    <h2>⑥ classList は切り替わっているのに見た目が変わらない</h2>
+    <button class="toggle-btn-6" type="button">切り替え</button>
+    <p class="box-6">見た目が変わるはずのボックス</p>
+  </section>
+
+  <script src="main.js"></script>
+</body>
+</html>
